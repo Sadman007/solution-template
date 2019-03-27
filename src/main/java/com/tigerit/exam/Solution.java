@@ -1,6 +1,6 @@
 package com.tigerit.exam;
 
-//import static com.tigerit.exam.IO.*;
+import static com.tigerit.exam.IO.*;
 
 import java.lang.*;
 import java.util.*;
@@ -384,9 +384,9 @@ public class Solution implements Runnable
     public void run() 
     {
         try {
-            //freader = new BufferedReader(new FileReader("case.txt"));
-              freader = new BufferedReader(new InputStreamReader(System.in));
-            //System.setOut(new PrintStream(new File(stdout)));
+            //freader = new BufferedReader(new FileReader("TigerITin.txt"));
+            freader = new BufferedReader(new InputStreamReader(System.in));
+           //System.setOut(new PrintStream(new File(stdout)));
         }
         catch(Exception E){
 
