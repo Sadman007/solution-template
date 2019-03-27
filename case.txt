@@ -1,0 +1,29 @@
+1
+2
+table_a
+3 3
+id_a a1 a2
+1 2 3
+2 4 5
+3 6 7
+table_b
+3 3
+id_b b1 b2
+1 2 9
+2 10 5
+3 12 7
+3
+SELECT *
+FROM table_a
+JOIN table_b
+ON table_a.a1 = table_b.b1
+
+SELECT *
+FROM table_a ta
+JOIN table_b tb
+ON ta.a2 = tb.b2
+
+SELECT ta.a1, ta.a2, tb.b1
+FROM table_a ta
+JOIN table_b tb
+ON ta.a2 = tb.b2

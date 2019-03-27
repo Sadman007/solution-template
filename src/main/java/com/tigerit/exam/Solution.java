@@ -1,17 +1,10 @@
 package com.tigerit.exam;
 
-import static com.tigerit.exam.IO.*;
+//import static com.tigerit.exam.IO.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-import static java.lang.System.exit;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Hashtable;
-import java.util.Scanner;
+import java.lang.*;
+import java.util.*;
+import java.io.*;
 import javafx.util.Pair;
 
 /**
@@ -23,7 +16,29 @@ import javafx.util.Pair;
 
 public class Solution implements Runnable 
 {
-    static Scanner sc;
+    static ArrayList<table> vTable = new ArrayList<table>();
+    static Hashtable<String, Integer> tID = new Hashtable<String, Integer>();
+    static ArrayList<Integer>modvalues = new ArrayList<Integer>();
+
+    static BufferedReader freader;
+    public static String readLine() {
+        String value;
+        try {
+            value = freader.readLine();
+        } catch (IOException ex) {
+            value = null;
+        }
+        return value;
+    }
+
+    public static Integer readLineAsInteger() {
+        return Integer.parseInt(readLine());
+    }
+    public static void printLine(Object o)
+    {
+        System.out.println(o);
+    }
+
 
     static class table {
 
@@ -55,8 +70,46 @@ public class Solution implements Runnable
         }
     }
 
-    static ArrayList<table> vTable = new ArrayList<table>();
-    static Hashtable<String, Integer> tID = new Hashtable<String, Integer>();
+    public static ArrayList<String> getStr()
+    {
+        String string = readLine();
+        ArrayList<String> res = new ArrayList<String>();
+        String current = new String();
+        for(Integer i = 0; i < string.length(); i++)
+        {
+            char c = string.charAt(i);
+            if( c == ' ' )
+            {
+                res.add(current);
+                current = new String();
+                continue;
+            }
+            current = current + c;
+        }     
+        res.add(current);
+        return res;
+    }
+    public static ArrayList<Integer> getInt()
+    {
+        String string = readLine();
+        ArrayList <Integer> res = new ArrayList <Integer> ();
+        Integer current = 0;
+        for(Integer i = 0; i < string.length(); i++)
+        {
+            char c = string.charAt(i);
+            if( c == ' ' )
+            {
+                res.add(current);
+                current = 0;
+                continue;
+            }
+            current = current * 10 + (c - 48);
+        }     
+        res.add(current);
+        return res;
+    }
+
+    
 
     static void inputAll(int noT) {
         int ID = 0;
@@ -67,19 +120,25 @@ public class Solution implements Runnable
             Hashtable<String, Integer> colMap = new Hashtable<String, Integer>();
             ArrayList< ArrayList<Integer>> tInfo = new ArrayList< ArrayList<Integer>>();
 
-            tName = sc.next();
+            tName = getStr().get(0);
             tID.put(tName, xi);
-            nC = sc.nextInt();
-            nD = sc.nextInt();
+            ArrayList<Integer>inpI = new ArrayList<Integer>();
+            ArrayList<String>inpS = new ArrayList<String>();
+            inpI = getInt();
+            nC = inpI.get(0);
+            nD = inpI.get(1);
+            inpS = getStr();
             for (int i = 0; i < nC; i++) {
-                tmp = sc.next();
+                tmp = inpS.get(i);
                 cName.add(tmp);
                 colMap.put(tmp, i);
             }
             for (int i = 0; i < nD; i++) {
                 ArrayList<Integer> rr = new ArrayList<Integer>();
+                inpI.clear();
+                inpI = getInt();
                 for (int j = 0; j < nC; j++) {
-                    val = sc.nextInt();
+                    val = inpI.get(j);
                     rr.add(val);
                 }
                 tInfo.add(rr);
@@ -100,16 +159,28 @@ public class Solution implements Runnable
         for (int i = 0; i < vT.cName.size(); i++) {
             if(i>0) System.out.printf(" ");
             System.out.print(vT.cName.get(i));
+
+            String str = vT.cName.get(i);
+            /*
+            for(int x=0;x<str.length();x++)
+            {
+                char ch = str.charAt(x);
+                modval = (modval+(ch))%1000000007;
+            }
+            */
+
         }
         System.out.println();
         for (int i = 0; i < vT.nD; i++) {
             for (int j = 0; j < vT.nC; j++) {
                 if(j>0) System.out.printf(" ");
                 System.out.print(vT.tInfo.get(i).get(j));
+                //modval = (modval+(vT.tInfo.get(i).get(j)))%1000000007;
             }
             System.out.println();
         }
         System.out.println();
+        //modvalues.add(modval);
     }
 
     static int getTableID(String tName) {
@@ -186,7 +257,8 @@ public class Solution implements Runnable
         String tmp = "";
 
         for (int i = 0; i < 4;) {
-            str = sc.nextLine();
+            str = readLine();
+
             Integer tt = str.length();
             if (tt.equals(0)) {
                 continue;
@@ -311,22 +383,37 @@ public class Solution implements Runnable
      @Override
     public void run() 
     {
+        try {
+            //freader = new BufferedReader(new FileReader("case.txt"));
+              freader = new BufferedReader(new InputStreamReader(System.in));
+            //System.setOut(new PrintStream(new File(stdout)));
+        }
+        catch(Exception E){
+
+        }
+
        // TODO code application logic here
         Integer testCase, numberOfTable, nQ, qIdx = 0;
-        sc = new Scanner(System.in);
-        
-        testCase = sc.nextInt();
+         
+        testCase = readLineAsInteger();
+
         for (int i = 1; i <= testCase; i++) {
             vTable.clear();
             tID.clear();
-            numberOfTable = sc.nextInt();
+            numberOfTable = readLineAsInteger();
             inputAll(numberOfTable);
-            nQ = sc.nextInt();
-            System.out.printf("Test: %d\n", i);
+            nQ = readLineAsInteger();
+            printLine("Test: "+i);
+
             while (nQ-- > 0) {
                 queryProcess(qIdx++);
-                System.gc();
             }
         }
+        /*
+        for(Integer it : modvalues)
+        {
+            printLine(it);
+        }
+        */
     }
 }
